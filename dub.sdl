@@ -1,0 +1,24 @@
+name "colored"
+description "A minimalistic console coloring library."
+authors "Christian Köstlin"
+copyright "Copyright © 2017, Christian Köstlin"
+license "MIT"
+
+configuration "ut" {
+  targetType "executable"
+  targetName "ut"
+
+  versions "unitThreadedLight"
+  dependency "unit-threaded" version="==0.7.25"
+  mainSourceFile "gen/testsuite.d"
+  excludedSourceFiles "source/app.d"
+}
+
+configuration "unittest" {
+  targetType "executable"
+  targetName "unittest"
+
+  dependency "unit-threaded" version="==0.7.25"
+  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f gen/testsuite.d"
+  mainSourceFile "gen/testsuite.d"
+}
