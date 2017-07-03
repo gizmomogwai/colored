@@ -82,7 +82,7 @@ string asMixin(T)() {
 `auto r(string s) { return StringWithForeground!TTT(s, TTT.r); }
 auto r(StringWithBackground!TTT s) { return StringWithBoth!TTT(s.s, TTT.r, s.bg); }
 auto onR(string s) { return StringWithBackground!TTT(s, TTT.r); }
-auto on(StringWithForeground!TTT s) { return StringWithBoth!TTT(s.s, s.fg, TTT.r); }
+auto onR(StringWithForeground!TTT s) { return StringWithBoth!TTT(s.s, s.fg, TTT.r); }
 `);
 }
 
