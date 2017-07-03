@@ -1,0 +1,21 @@
+* Colored
+  [[https://travis-ci.org/gizmomogwai/colored][https://travis-ci.org/gizmomogwai/colored.svg]]
+
+** Intro
+colored is yet another terminal coloring lib for dlang. compared to
+others the source is really minimalistic, dependencies include only
+unit_threaded for testing.
+
+** Usage
+#+NAME: example
+#+BEGIN_SRC D
+import colored;
+unittest {
+  import std.stdio;
+  writeln("test".green.onRed);
+}
+#+END_SRC
+
+** Api
+The api allows only setting a foreground and backgroundcolor
+once. This is done by returning dedicated types after each operation.
