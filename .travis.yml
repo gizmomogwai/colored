@@ -1,5 +1,5 @@
 language: d
 sudo: false
-
-script:
-  - dub test
+before_install: pip install --user codecov
+script: dub test --compiler=${DC} --coverage
+after_success: codecov
