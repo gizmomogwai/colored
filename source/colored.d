@@ -10,7 +10,8 @@ enum AnsiColor {
   blue = 34,
   magenta = 35,
   cyan = 36,
-  white = 37
+  white = 37,
+  defaultColor = 39
 }
 
 struct StringWithForeground(T) {
@@ -87,3 +88,16 @@ auto onR(StringWithForeground!TTT s) { return StringWithBoth!TTT(s.s, s.fg, TTT.
 }
 
 mixin(asMixin!AnsiColor);
+
+unittest {
+  import std.stdio;
+  writeln("Hello World".black);
+  writeln("Hello World".red);
+  writeln("Hello World".green);
+  writeln("Hello World".yellow);
+  writeln("Hello World".blue);
+  writeln("Hello World".magenta);
+  writeln("Hello World".cyan);
+  writeln("Hello World".white);
+  writeln("Hello World".defaultColor);
+}
