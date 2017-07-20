@@ -4,23 +4,26 @@ authors "Christian Köstlin"
 copyright "Copyright © 2017, Christian Köstlin"
 license "MIT"
 
-configuration "library"
+configuration "library" {
+  targetPath "out/main"
+}
 
 configuration "ut" {
   targetType "executable"
   targetName "ut"
+  targetPath "out/test"
 
   versions "unitThreadedLight"
   dependency "unit-threaded" version="==0.7.25"
-  mainSourceFile "gen/testsuite.d"
   excludedSourceFiles "source/app.d"
 }
 
 configuration "unittest" {
   targetType "executable"
   targetName "unittest"
+  targetPath "out/test"
 
   dependency "unit-threaded" version="==0.7.25"
-  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f gen/testsuite.d"
-  mainSourceFile "gen/testsuite.d"
+  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/gen/testsuite.d"
+  mainSourceFile "out/gen/testsuite.d"
 }
