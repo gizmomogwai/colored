@@ -15,119 +15,114 @@ enum AnsiColor
     defaultColor = 39
 }
 
-struct StringWithForeground(T)
+enum Style
+{
+    bold = 1,
+    dim = 2,
+    underlined = 4,
+    blink = 5,
+    reverse = 7,
+    hidden = 8
+}
+
+struct StyledString
 {
     string s;
-    T fg;
-    this(string s, T fg)
+    int[] befores;
+    int[] afters;
+    this(string s)
     {
         this.s = s;
-        this.fg = fg;
+    }
+
+    StyledString addStyle(int before, int after)
+    {
+        befores ~= before;
+        afters ~= after;
+        return this;
     }
 
     string toString()
     {
-        return "\033[%dm%s\033[0m".format(fg, s);
+        import std.algorithm;
+
+        auto prefix = befores.map!(a => "\033[%dm".format(a)).join("");
+        auto suffix = afters.map!(a => "\033[%dm".format(a)).join("");
+        return "%s%s%s".format(prefix, s, suffix);
     }
 }
 
-struct StringWithBackground(T)
-{
-    string s;
-    T bg;
-    this(string s, T bg)
-    {
-        this.s = s;
-        this.bg = bg;
-    }
-
-    string toString()
-    {
-        return "\033[%dm%s\033[0m".format(bg + 10, s);
-    }
-}
-
-struct StringWithBoth(T)
-{
-    string s;
-    T fg;
-    T bg;
-    this(string s, T fg, T bg)
-    {
-        this.s = s;
-        this.fg = fg;
-        this.bg = bg;
-    }
-
-    string toString()
-    {
-        return "\033[%dm\033[%dm%s\033[0m".format(fg, bg + 10, s);
-    }
-}
-
-@("color structs") unittest
+@("styledstring") unittest
 {
     import unit_threaded;
+    import std.stdio;
+    import std.traits;
 
-    StringWithForeground!AnsiColor("fgTest", AnsiColor.red).toString.shouldEqual(
-            "\033[31mfgTest\033[0m");
-    StringWithBackground!AnsiColor("bgTest", AnsiColor.red).toString.shouldEqual(
-            "\033[41mbgTest\033[0m");
-    StringWithBoth!AnsiColor("bothTest", AnsiColor.red, AnsiColor.red).toString.shouldEqual(
-            "\033[31m\033[41mbothTest\033[0m");
+    foreach (immutable color; [EnumMembers!AnsiColor])
+    {
+        auto colorName = "%s".format(color);
+        writeln(StyledString(colorName).addStyle(color, 0));
+    }
+    foreach (immutable color; [EnumMembers!AnsiColor])
+    {
+        auto colorName = "bg%s".format(color);
+        writeln(StyledString(colorName).addStyle(color + 10, 0));
+    }
+    foreach (immutable style; [EnumMembers!Style])
+    {
+        auto styleName = "%s".format(style);
+        writeln(StyledString(styleName).addStyle(style, style + 20));
+    }
+
+    writeln(StyledString("test").addStyle(AnsiColor.red, 0)
+            .addStyle(Style.underlined, Style.underlined + 20));
 }
 
-string asMixin(T)()
+auto colorMixin(T)()
 {
-    import std.conv;
     import std.traits;
 
     string res = "";
-    foreach (immutable ansiColor; [EnumMembers!T])
+    foreach (immutable color; [EnumMembers!T])
     {
-        res ~= "auto %1$s(string s) { return StringWithForeground!%2$s(s, %2$s.%1$s); }\n".format(ansiColor,
-                typeof(T.init).stringof);
-        res ~= "auto %1$s(StringWithBackground!%2$s s) { return StringWithBoth!%2$s(s.s, %2$s.%1$s, s.bg); }\n".format(
-                ansiColor, typeof(T.init).stringof);
-        string n = ansiColor.to!string;
-        string name = n[0 .. 1].toUpper ~ n[1 .. $];
-        res ~= "auto on%3$s(string s) { return StringWithBackground!%2$s(s, %2$s.%1$s); }\n".format(ansiColor,
-                typeof(T.init).stringof, name);
-        res ~= "auto on%3$s(StringWithForeground!%2$s s) { return StringWithBoth!%2$s(s.s, s.fg, %2$s.%1$s); }\n"
-            .format(ansiColor, typeof(T.init).stringof, name);
+        auto t = typeof(T.init).stringof;
+        auto c = "%s".format(color);
+        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s, 0); }\n".format(c,
+                t);
+        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s, 0); }\n".format(c, t);
+        string name = c[0 .. 1].toUpper ~ c[1 .. $];
+        res ~= "auto on%3$s(string s) { return StyledString(s).addStyle(%2$s.%1$s+10, 0); }\n".format(c,
+                t, name);
+        res ~= "auto on%3$s(StyledString s) { return s.addStyle(%2$s.%1$s+10, 0); }\n".format(c,
+                t, name);
     }
     return res;
 }
 
-@("color mixins") unittest
+auto styleMixin(T)()
 {
-    import unit_threaded;
+    import std.traits;
 
-    enum TTT
+    string res = "";
+    foreach (immutable style; [EnumMembers!T])
     {
-        r = 1
+        auto t = typeof(T.init).stringof;
+        auto s = "%s".format(style);
+        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s, %2$s.%1$s+20); }\n".format(s,
+                t);
+        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s, %2$s.%1$s+20); }\n".format(s,
+                t);
     }
-
-    asMixin!TTT.shouldEqual(`auto r(string s) { return StringWithForeground!TTT(s, TTT.r); }
-auto r(StringWithBackground!TTT s) { return StringWithBoth!TTT(s.s, TTT.r, s.bg); }
-auto onR(string s) { return StringWithBackground!TTT(s, TTT.r); }
-auto onR(StringWithForeground!TTT s) { return StringWithBoth!TTT(s.s, s.fg, TTT.r); }
-`);
+    return res;
 }
 
-mixin(asMixin!AnsiColor);
+mixin(colorMixin!AnsiColor);
+mixin(styleMixin!Style);
 
-unittest
+@("api") unittest
 {
     import std.stdio;
 
-    writeln("Hello World".black);
-    writeln("Hello World".red);
-    writeln("Hello World".green);
-    writeln("Hello World".yellow);
-    writeln("Hello World".blue);
-    writeln("Hello World".magenta);
-    writeln("Hello World".cyan);
-    writeln("Hello World".white);
-    writeln("Hello World".defaultColor);
+    writeln("red".red);
+    writeln("red".red.onYellow.bold.underlined);
 }
