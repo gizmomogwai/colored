@@ -11,8 +11,16 @@ enum AnsiColor
     blue = 34,
     magenta = 35,
     cyan = 36,
-    white = 37,
-    defaultColor = 39
+    lightGray = 37,
+    defaultColor = 39,
+    darkGray = 90,
+    lightRed = 91,
+    lightGreen = 92,
+    lightYellow = 93,
+    lightBlue = 94,
+    lightMagenta = 95,
+    lightCyan = 96,
+    white = 97
 }
 
 enum Style
@@ -123,6 +131,6 @@ mixin(styleMixin!Style);
 {
     import std.stdio;
 
-    writeln("red".red);
+    writeln("red".red.onGreen);
     writeln("red".red.onYellow.bold.underlined);
 }
