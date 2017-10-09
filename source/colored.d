@@ -43,13 +43,22 @@ struct StyledString
         this.s = s;
     }
 
-    StyledString addStyle(int before, int after)
+    private StyledString addPair(int before, int after)
     {
         befores ~= before;
         afters ~= after;
         return this;
     }
 
+  StyledString setForeground(int color) {
+    return addPair(color, 0);
+  }
+  StyledString setBackground(int color) {
+    return addPair(color + 10, 0);
+  }
+  StyledString addStyle(int style) {
+    return addPair(style, style+20);
+  }
     string toString()
     {
         import std.algorithm;
@@ -69,21 +78,18 @@ struct StyledString
     foreach (immutable color; [EnumMembers!AnsiColor])
     {
         auto colorName = "%s".format(color);
-        writeln(StyledString(colorName).addStyle(color, 0));
+        writeln(StyledString(colorName).setForeground(color));
     }
     foreach (immutable color; [EnumMembers!AnsiColor])
     {
         auto colorName = "bg%s".format(color);
-        writeln(StyledString(colorName).addStyle(color + 10, 0));
+        writeln(StyledString(colorName).setBackground(color));
     }
     foreach (immutable style; [EnumMembers!Style])
     {
         auto styleName = "%s".format(style);
-        writeln(StyledString(styleName).addStyle(style, style + 20));
+        writeln(StyledString(styleName).addStyle(style));
     }
-
-    writeln(StyledString("test").addStyle(AnsiColor.red, 0)
-            .addStyle(Style.underlined, Style.underlined + 20));
 }
 
 auto colorMixin(T)()
@@ -95,13 +101,13 @@ auto colorMixin(T)()
     {
         auto t = typeof(T.init).stringof;
         auto c = "%s".format(color);
-        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s, 0); }\n".format(c,
+        res ~= "auto %1$s(string s) { return StyledString(s).setForeground(%2$s.%1$s); }\n".format(c,
                 t);
-        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s, 0); }\n".format(c, t);
+        res ~= "auto %1$s(StyledString s) { return s.setForeground(%2$s.%1$s); }\n".format(c, t);
         string name = c[0 .. 1].toUpper ~ c[1 .. $];
-        res ~= "auto on%3$s(string s) { return StyledString(s).addStyle(%2$s.%1$s+10, 0); }\n".format(c,
+        res ~= "auto on%3$s(string s) { return StyledString(s).setBackground(%2$s.%1$s); }\n".format(c,
                 t, name);
-        res ~= "auto on%3$s(StyledString s) { return s.addStyle(%2$s.%1$s+10, 0); }\n".format(c,
+        res ~= "auto on%3$s(StyledString s) { return s.setBackground(%2$s.%1$s); }\n".format(c,
                 t, name);
     }
     return res;
@@ -116,9 +122,9 @@ auto styleMixin(T)()
     {
         auto t = typeof(T.init).stringof;
         auto s = "%s".format(style);
-        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s, %2$s.%1$s+20); }\n".format(s,
+        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s); }\n".format(s,
                 t);
-        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s, %2$s.%1$s+20); }\n".format(s,
+        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s); }\n".format(s,
                 t);
     }
     return res;
