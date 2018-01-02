@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 * Colored
-  [[https://travis-ci.org/gizmomogwai/colored][https://travis-ci.org/gizmomogwai/colored.svg]][[https://codecov.io/gh/gizmomogwai/colored][https://codecov.io/gh/gizmomogwai/colored/branch/master/graph/badge.svg]]
+  [[https://travis-ci.org/gizmomogwai/colored][https://travis-ci.org/gizmomogwai/colored.svg]][[https://codecov.io/gh/gizmomogwai/colored][https://codecov.io/gh/gizmomogwai/colored/branch/master/graph/badge.svg]][[https://gizmomogwai.github.io/colored/][https://img.shields.io/readthedocs/pip.svg]]
 ** Intro
 colored is yet another terminal coloring lib for dlang. compared to
 others the source is really minimalistic, dependencies include only
@@ -16,6 +16,6 @@ unittest {
 }
 #+END_SRC
 
-** Api
+** [[https://gizmomogwai.github.io/colored/][Api]]
 The api allows only setting a foreground and backgroundcolor
 once. This is done by returning dedicated types after each operation.

@@ -4,6 +4,8 @@ authors "Christian Köstlin"
 copyright "Copyright © 2017, Christian Köstlin"
 license "MIT"
 
+x:ddoxFilterArgs "--min-protection=Private"
+
 configuration "library" {
   targetPath "out/main"
 }
@@ -14,7 +16,7 @@ configuration "ut" {
   targetPath "out/test"
 
   versions "unitThreadedLight"
-  dependency "unit-threaded" version="~>0.7.31"
+  dependency "unit-threaded" version="~>0.7.33"
   excludedSourceFiles "source/app.d"
 }
 
@@ -23,7 +25,7 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>0.7.31"
+  dependency "unit-threaded" version="~>0.7.33"
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/gen/testsuite.d"
   mainSourceFile "out/gen/testsuite.d"
 }

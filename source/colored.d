@@ -50,16 +50,22 @@ struct StyledString
         return this;
     }
 
-  StyledString setForeground(int color) {
-    return addPair(color, 0);
-  }
-  StyledString setBackground(int color) {
-    return addPair(color + 10, 0);
-  }
-  StyledString addStyle(int style) {
-    return addPair(style, style+20);
-  }
-    string toString()
+    StyledString setForeground(int color)
+    {
+        return addPair(color, 0);
+    }
+
+    StyledString setBackground(int color)
+    {
+        return addPair(color + 10, 0);
+    }
+
+    StyledString addStyle(int style)
+    {
+        return addPair(style, style + 20);
+    }
+
+    string toString() @safe
     {
         import std.algorithm;
 
@@ -122,10 +128,8 @@ auto styleMixin(T)()
     {
         auto t = typeof(T.init).stringof;
         auto s = "%s".format(style);
-        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s); }\n".format(s,
-                t);
-        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s); }\n".format(s,
-                t);
+        res ~= "auto %1$s(string s) { return StyledString(s).addStyle(%2$s.%1$s); }\n".format(s, t);
+        res ~= "auto %1$s(StyledString s) { return s.addStyle(%2$s.%1$s); }\n".format(s, t);
     }
     return res;
 }
