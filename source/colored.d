@@ -140,7 +140,6 @@ mixin(styleMixin!Style);
 @("api") unittest
 {
     import std.stdio;
-
-    writeln("red".red.onGreen);
-    writeln("red".red.onYellow.bold.underlined);
+    "redOnGreen".red.onGreen.writeln;
+    "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
 }
