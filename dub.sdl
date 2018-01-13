@@ -4,7 +4,7 @@ authors "Christian Köstlin"
 copyright "Copyright © 2017, Christian Köstlin"
 license "MIT"
 
-x:ddoxFilterArgs "--min-protection=Private"
+x:ddoxFilterArgs "--min-protection=Public"
 
 configuration "library" {
   targetPath "out/main"

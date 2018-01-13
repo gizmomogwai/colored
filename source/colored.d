@@ -1,7 +1,9 @@
+/// Simple coloring module for strings
 module colored;
 
 import std.string;
 
+/// Available Colors
 enum AnsiColor
 {
     black = 30,
@@ -23,6 +25,7 @@ enum AnsiColor
     white = 97
 }
 
+/// Available Styles
 enum Style
 {
     bold = 1,
@@ -33,11 +36,12 @@ enum Style
     hidden = 8
 }
 
+/// Internal structure to style a string
 struct StyledString
 {
-    string s;
-    int[] befores;
-    int[] afters;
+    private string s;
+    private int[] befores;
+    private int[] afters;
     this(string s)
     {
         this.s = s;

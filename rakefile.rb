@@ -8,4 +8,10 @@ task :docs do
   sh "dub build -b ddox"
 end
 
-task :default => [:format, :docs]
+desc 'prepare docs'
+task :prepare_docs do
+  sh "rm -rf docs"
+  sh "git clone -b gh-pages git@github.com:gizmomogwai/colored.git docs"
+end
+
+task :default => [:format, :prepare_docs, :docs]
