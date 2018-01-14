@@ -13,7 +13,7 @@ after_success: codecov
 deploy:
   provider: pages
   skip-cleanup: true
-  local-dir: "/home/travis/build/gizmomogwai/colored/docs"
+  local-dir: "docs"
   github-token: "$GH_REPO_TOKEN"
   verbose: true
   keep-history: true
