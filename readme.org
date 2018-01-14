@@ -12,7 +12,7 @@ unit_threaded for testing.
 import colored;
 unittest {
   import std.stdio;
-  writeln("test".green.onRed);
+  "test".green.onRed.writeln;
 }
 #+END_SRC
 
