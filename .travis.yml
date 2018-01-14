@@ -1,5 +1,24 @@
 language: d
 sudo: false
+addons:
+  apt:
+    packages:
+    - libevent-dev
 before_install: pip install --user codecov
-script: dub test --compiler=${DC} --coverage
+script:
+- pwd
+- dub test --compiler=${DC} --coverage
+- dub build -b ddox
 after_success: codecov
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: "/home/travis/build/gizmomogwai/colored/docs"
+  github-token: "$GH_REPO_TOKEN"
+  verbose: true
+  keep-history: true
+  on:
+    branch: master
+env:
+  global:
+    secure: Dmtvt1aGQ74hLeTtnu5CMvubZSUz1YE7CFq9FjCf4VRmVUmdBLW7OWSHfm4Amr9V+drqHE+nSfd2aQANVXvPnhfFJEfC9vbcig4SbeiaIq1ZWOixNr2QEsunf7wTz7o02DkUpOEoUnzphodkVv893wUovnHSTBJtFrF1syExFMvOMPNlv7OFxWdV8Bg1Glj2rTkrtjfRFVU64AEjPOQN2E5j5lCcnLG+FcWJEv4gBPzzZXbs1+TI6arPHvDkuOenPnxHJOcu/C05qc8Q/c7tfSNwqC0IEKw3GbDHEn4uYQyihnqfqtZ7B66Pe/6SNK2JVKGHViswTSIVYA3qcnPkFD4h7FtBQS0yrza/2KhaFljCVoIwFGxlPlPV6BDt9+46poPR/6Oxr1WgRC7B0e4p7KVncOWP0SZ7lgQBfEAqhHJ+jcCrPeGuAUyeVbvzSeYcXTFz/4a3ddSybJ+SLlyciUYqHipa88NDLmdvRsj6pjgw6Qdbs8azo3hfm+JhcKENmX0JONK/Y+jxpDo3vLFotZKVvgJGU2WPaVcwfwoolDi0bngXs/tp5AGXtu/zuh0wSd/vHO3kno+9AER5qW/bH+sWrQiFhzRYk/EQqP6t4Y6Pfqhsn7UaxsfbiLsguzvy88mZfF1R07zEf3FqhdG9WObg48w3QAxGqvgv8V6vgUA=
