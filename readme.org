@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
-* Colored
-  [[https://travis-ci.org/gizmomogwai/colored][https://travis-ci.org/gizmomogwai/colored.svg]][[https://codecov.io/gh/gizmomogwai/colored][https://codecov.io/gh/gizmomogwai/colored/branch/master/graph/badge.svg]][[https://gizmomogwai.github.io/colored/][https://img.shields.io/readthedocs/pip.svg]]
+* Colored [[https://gizmomogwai.github.io/colored][https://img.shields.io/readthedocs/pip.svg?style=flat-square]] [[https://travis-ci.org/gizmomogwai/colored][https://img.shields.io/travis/gizmomogwai/colored/master.svg?style=flat-square]] [[https://github.com/gizmomogwai/colored][https://img.shields.io/github/tag/gizmomogwai/colored.svg?style=flat-square]] [[https://codecov.io/gh/gizmomogwai/colored][https://img.shields.io/codecov/c/github/gizmomogwai/colored/master.svg?style=flat-square]]
+
 ** Intro
 colored is yet another terminal coloring lib for dlang. compared to
 others the source is really minimalistic, dependencies include only

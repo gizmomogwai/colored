@@ -1,3 +1,9 @@
+/++
+ + Copyright: Copyright © 2017, Christian Köstlin
+ + Authors: Christian Köstlin
+ + License: MIT
+ +/
+
 /// Simple coloring module for strings
 module colored;
 
@@ -144,6 +150,7 @@ mixin(styleMixin!Style);
 @("api") unittest
 {
     import std.stdio;
+
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
 }

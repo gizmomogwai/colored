@@ -1,13 +1,17 @@
+﻿%YAML 1.1
+---
 language: d
+d: [dmd, ldc]
 sudo: false
 addons:
   apt:
     packages:
     - libevent-dev
-before_install: pip install --user codecov
+before_install: [pip install --user codecov, dub fetch packageversion]
 script:
-- dub test --compiler=${DC} --coverage
+- dub test --compiler=${DC} --coverage -- -s -t -d
 - dub build -b ddox
+- dub build --compiler=${DC} --build=ddox
 after_success: codecov
 deploy:
   provider: pages
@@ -16,7 +20,7 @@ deploy:
   github-token: "$GH_REPO_TOKEN"
   verbose: true
   keep-history: true
-  on:
+  true:
     branch: master
 env:
   global:

@@ -16,7 +16,7 @@ configuration "ut" {
   targetPath "out/test"
 
   versions "unitThreadedLight"
-  dependency "unit-threaded" version="~>0.7.33"
+  dependency "unit-threaded" version="~>0.7.36"
   excludedSourceFiles "source/app.d"
 }
 
@@ -25,7 +25,10 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>0.7.33"
-  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/gen/testsuite.d"
-  mainSourceFile "out/gen/testsuite.d"
+  dependency "unit-threaded" version="~>0.7.36"
+  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
+  mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
+sourcePaths "source" "out/generated/packageversion"
+importPaths "source" "out/generated/packageversion"
+preGenerateCommands "dub run packageversion -- --packageName=colored"
