@@ -154,3 +154,4 @@ mixin(styleMixin!Style);
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
 }
+
