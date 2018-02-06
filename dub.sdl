@@ -10,7 +10,7 @@ subConfiguration "packageversion" "library"
 x:ddoxFilterArgs "--min-protection=Public"
 
 configuration "library" {
-  targetPath "out/main"
+  targetPath "out/lib"
 }
 
 configuration "ut" {
