@@ -1,10 +1,10 @@
 /++
+ + Simple coloring module for strings
+ +
  + Copyright: Copyright © 2017, Christian Köstlin
  + Authors: Christian Koestlin
  + License: MIT
  +/
-
-/// Simple coloring module for strings
 module colored;
 
 import std.string;
@@ -154,4 +154,3 @@ mixin(styleMixin!Style);
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
 }
-
