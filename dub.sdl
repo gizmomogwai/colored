@@ -4,10 +4,16 @@ authors "Christian Köstlin"
 copyright "Copyright © 2017, Christian Köstlin"
 license "MIT"
 
-dependency "packageversion" version="~>0.0.12"
+x:ddoxFilterArgs "--min-protection=Public"
+
+dependency "packageversion" version="~>0.0.15"
 subConfiguration "packageversion" "library"
 
-x:ddoxFilterArgs "--min-protection=Public"
+preBuildCommands "dub run packageversion -- --packageName=colored"
+sourceFiles "out/generated/packageversion/colored/packageversion.d"
+sourcePaths "source" "out/generated/packageversion"
+importPaths "source" "out/generated/packageversion"
+
 
 configuration "library" {
   targetPath "out/lib"
@@ -32,6 +38,3 @@ configuration "unittest" {
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
-sourcePaths "source" "out/generated/packageversion"
-importPaths "source" "out/generated/packageversion"
-preGenerateCommands "dub run packageversion -- --packageName=colored"

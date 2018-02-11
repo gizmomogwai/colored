@@ -7,6 +7,8 @@
  +/
 module colored;
 
+public import colored.packageversion;
+
 import std.string;
 
 /// Available Colors
