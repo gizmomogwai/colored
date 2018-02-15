@@ -9,7 +9,7 @@ x:ddoxFilterArgs "--min-protection=Public"
 dependency "packageversion" version="~>0.0.15"
 subConfiguration "packageversion" "library"
 
-preBuildCommands "dub run packageversion -- --packageName=colored"
+preBuildCommands "packageversion --packageName=colored || dub run packageversion -- --packageName=colored"
 sourceFiles "out/generated/packageversion/colored/packageversion.d"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"
