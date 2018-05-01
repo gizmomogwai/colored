@@ -8,8 +8,8 @@ x:ddoxFilterArgs "--min-protection=Public"
 
 dependency "packageversion" version="~>0.0.16"
 subConfiguration "packageversion" "library"
-
 preGenerateCommands "packageversion || dub run packageversion"
+
 sourceFiles "out/generated/packageversion/colored/packageversion.d"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"
@@ -37,6 +37,3 @@ configuration "unittest" {
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
-preGenerateCommands "dub run packageversion -- --packageName=colored"
-dependency "packageversion" version="~>0.0.12"
-subConfiguration "packageversion" "library"
