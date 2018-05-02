@@ -34,4 +34,5 @@ configuration "unittest" {
   dependency "unit-threaded" version="~>0.7.38"
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
+  sourceFiles "out/generated/packageversion/colored/packageversion.d"
 }
