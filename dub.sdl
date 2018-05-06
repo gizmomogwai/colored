@@ -6,25 +6,8 @@ license "MIT"
 
 x:ddoxFilterArgs "--min-protection=Public"
 
-dependency "packageversion" version="~>0.0.16"
-subConfiguration "packageversion" "library"
-preGenerateCommands "packageversion || dub run packageversion"
-sourceFiles "out/generated/packageversion/colored/packageversion.d"
-sourcePaths "source" "out/generated/packageversion"
-importPaths "source" "out/generated/packageversion"
-
 configuration "library" {
   targetPath "out/lib"
-}
-
-configuration "ut" {
-  targetType "executable"
-  targetName "ut"
-  targetPath "out/test"
-
-  versions "unitThreadedLight"
-  dependency "unit-threaded" version="~>0.7.38"
-  excludedSourceFiles "source/app.d"
 }
 
 configuration "unittest" {
