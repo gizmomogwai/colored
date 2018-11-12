@@ -6,6 +6,11 @@ license "MIT"
 
 x:ddoxFilterArgs "--min-protection=Public"
 
+preGenerateCommands "dub run packageversion"
+sourcePaths "source" "out/generated/packageversion"
+importPaths "source" "out/generated/packageversion"
+dependency "packageversion" version="~>0.0.15"
+
 configuration "library" {
   targetPath "out/lib"
 }
