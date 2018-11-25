@@ -74,8 +74,10 @@ var symbols = [
 {name: 'colored.StyledString.setForeground', kind: "functiondeclaration", path: './colored/StyledString.setForeground.html', attributes: []},
 {name: 'colored.StyledString.this', kind: "functiondeclaration", path: './colored/StyledString.this.html', attributes: []},
 {name: 'colored.StyledString.toString', kind: "functiondeclaration", path: './colored/StyledString.toString.html', attributes: ["safe"]},
+{name: 'colored.StyledString.unformatted', kind: "variabledeclaration", path: './colored/StyledString.unformatted.html', attributes: []},
 {name: 'colored.styleMixin', kind: "functiondeclaration", path: './colored/styleMixin.html', attributes: ["auto"]},
 {name: 'colored.underlined', kind: "functiondeclaration", path: './colored/underlined.html', attributes: ["auto"]},
+{name: 'colored.unformattedLength', kind: "functiondeclaration", path: './colored/unformattedLength.html', attributes: []},
 {name: 'colored.white', kind: "functiondeclaration", path: './colored/white.html', attributes: ["auto"]},
 {name: 'colored.yellow', kind: "functiondeclaration", path: './colored/yellow.html', attributes: ["auto"]},
 ];
