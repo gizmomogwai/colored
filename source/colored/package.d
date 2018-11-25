@@ -47,12 +47,12 @@ enum Style
 /// Internal structure to style a string
 struct StyledString
 {
-    private string s;
+    public string unformatted;
     private int[] befores;
     private int[] afters;
-    this(string s)
+    public this(string unformatted)
     {
-        this.s = s;
+        this.unformatted = unformatted;
     }
 
     private StyledString addPair(int before, int after)
@@ -74,7 +74,7 @@ struct StyledString
 
     StyledString addStyle(int style)
     {
-        return addPair(style, style + 20);
+        return addPair(style, 0);
     }
 
     string toString() @safe
@@ -83,7 +83,7 @@ struct StyledString
 
         auto prefix = befores.map!(a => "\033[%dm".format(a)).join("");
         auto suffix = afters.map!(a => "\033[%dm".format(a)).join("");
-        return "%s%s%s".format(prefix, s, suffix);
+        return "%s%s%s".format(prefix, unformatted, suffix);
     }
 }
 
@@ -155,4 +155,44 @@ mixin(styleMixin!Style);
 
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
+    "bold".bold.writeln;
+    "test".writeln;
+}
+
+/// Calculate length of string excluding all formatting escapes
+ulong unformattedLength(string s)
+{
+    enum State
+    {
+        NORMAL,
+        ESCAPED,
+    }
+
+    auto state = State.NORMAL;
+    ulong count = 0;
+    foreach (c; s)
+    {
+        switch (state)
+        {
+        case State.NORMAL:
+            if (c == 0x1b)
+            {
+                state = State.ESCAPED;
+            }
+            else
+            {
+                count++;
+            }
+            break;
+        case State.ESCAPED:
+            if (c == 'm')
+            {
+                state = State.NORMAL;
+            }
+            break;
+        default:
+            throw new Exception("Illegal state");
+        }
+    }
+    return count;
 }
