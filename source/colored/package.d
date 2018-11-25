@@ -196,3 +196,14 @@ ulong unformattedLength(string s)
     }
     return count;
 }
+
+auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
+{
+    auto res = s;
+    auto currentWidth = s.unformattedLength;
+    for (auto i = currentWidth; i < width; ++i)
+    {
+        res ~= fillChar;
+    }
+    return res;
+}
