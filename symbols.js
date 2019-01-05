@@ -34,6 +34,7 @@ var symbols = [
 {name: 'colored.dim', kind: "functiondeclaration", path: './colored/dim.html', attributes: ["auto"]},
 {name: 'colored.green', kind: "functiondeclaration", path: './colored/green.html', attributes: ["auto"]},
 {name: 'colored.hidden', kind: "functiondeclaration", path: './colored/hidden.html', attributes: ["auto"]},
+{name: 'colored.leftJustifyFormattedString', kind: "functiondeclaration", path: './colored/leftJustifyFormattedString.html', attributes: ["auto"]},
 {name: 'colored.lightBlue', kind: "functiondeclaration", path: './colored/lightBlue.html', attributes: ["auto"]},
 {name: 'colored.lightCyan', kind: "functiondeclaration", path: './colored/lightCyan.html', attributes: ["auto"]},
 {name: 'colored.lightGray', kind: "functiondeclaration", path: './colored/lightGray.html', attributes: ["auto"]},
