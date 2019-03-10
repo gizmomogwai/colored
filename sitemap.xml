@@ -6,7 +6,9 @@
 <url><loc>http://127.0.0.1/colored/packageversion/NAME.html</loc></url>
 <url><loc>http://127.0.0.1/colored/packageversion/VERSION.html</loc></url>
 <url><loc>http://127.0.0.1/colored.html</loc></url>
+<url><loc>http://127.0.0.1/colored/all.html</loc></url>
 <url><loc>http://127.0.0.1/colored/AnsiColor.html</loc></url>
+<url><loc>http://127.0.0.1/colored/backgroundColor.html</loc></url>
 <url><loc>http://127.0.0.1/colored/black.html</loc></url>
 <url><loc>http://127.0.0.1/colored/black.html</loc></url>
 <url><loc>http://127.0.0.1/colored/blink.html</loc></url>
@@ -24,6 +26,8 @@
 <url><loc>http://127.0.0.1/colored/defaultColor.html</loc></url>
 <url><loc>http://127.0.0.1/colored/dim.html</loc></url>
 <url><loc>http://127.0.0.1/colored/dim.html</loc></url>
+<url><loc>http://127.0.0.1/colored/filterAnsiEscapes.html</loc></url>
+<url><loc>http://127.0.0.1/colored/foregroundColor.html</loc></url>
 <url><loc>http://127.0.0.1/colored/green.html</loc></url>
 <url><loc>http://127.0.0.1/colored/green.html</loc></url>
 <url><loc>http://127.0.0.1/colored/hidden.html</loc></url>
@@ -45,6 +49,7 @@
 <url><loc>http://127.0.0.1/colored/lightYellow.html</loc></url>
 <url><loc>http://127.0.0.1/colored/magenta.html</loc></url>
 <url><loc>http://127.0.0.1/colored/magenta.html</loc></url>
+<url><loc>http://127.0.0.1/colored/none.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onBlack.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onBlack.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onBlue.html</loc></url>
@@ -75,6 +80,7 @@
 <url><loc>http://127.0.0.1/colored/onMagenta.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onRed.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onRed.html</loc></url>
+<url><loc>http://127.0.0.1/colored/onRgb.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onWhite.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onWhite.html</loc></url>
 <url><loc>http://127.0.0.1/colored/onYellow.html</loc></url>
@@ -83,7 +89,21 @@
 <url><loc>http://127.0.0.1/colored/red.html</loc></url>
 <url><loc>http://127.0.0.1/colored/reverse.html</loc></url>
 <url><loc>http://127.0.0.1/colored/reverse.html</loc></url>
+<url><loc>http://127.0.0.1/colored/rgb.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.background.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.foreground.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.onRgb.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.RGB.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.RGB.b.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.RGB.g.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.RGB.r.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.rgb.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.this.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.toString.html</loc></url>
+<url><loc>http://127.0.0.1/colored/RGBString.unformatted.html</loc></url>
 <url><loc>http://127.0.0.1/colored/Style.html</loc></url>
+<url><loc>http://127.0.0.1/colored/style.html</loc></url>
 <url><loc>http://127.0.0.1/colored/StyledString.html</loc></url>
 <url><loc>http://127.0.0.1/colored/StyledString.addStyle.html</loc></url>
 <url><loc>http://127.0.0.1/colored/StyledString.setBackground.html</loc></url>
@@ -92,6 +112,7 @@
 <url><loc>http://127.0.0.1/colored/StyledString.toString.html</loc></url>
 <url><loc>http://127.0.0.1/colored/StyledString.unformatted.html</loc></url>
 <url><loc>http://127.0.0.1/colored/styleMixin.html</loc></url>
+<url><loc>http://127.0.0.1/colored/tokenize.html</loc></url>
 <url><loc>http://127.0.0.1/colored/underlined.html</loc></url>
 <url><loc>http://127.0.0.1/colored/underlined.html</loc></url>
 <url><loc>http://127.0.0.1/colored/unformattedLength.html</loc></url>

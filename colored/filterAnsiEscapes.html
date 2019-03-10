@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Variable VERSION</title>
-		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
-		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
-		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+		<title>Function filterAnsiEscapes</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script><script type="text/javascript" src="../scripts/ddox.js">/**/</script>
 	</head>
 	<body onload="setupDdox();">
 		<nav id="main-nav">
@@ -16,18 +16,18 @@
 				<form action="#" method="GET">
 					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
 				</form>
-				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../";
 $('#symbolSearchPane').show();</script>
 			</div>
 			<ul class="tree-view">
 				<li class="tree-view ">
-					<div class="package ">
-						<a href="../../colored.html">colored</a>
+					<div class="package selected">
+						<a href="../colored.html">colored</a>
 					</div>
 			<ul class="tree-view">
 				<li>
-					<div class="module selected">
-						<a href="../../colored/packageversion.html">packageversion</a>
+					<div class="module ">
+						<a href="../colored/packageversion.html">packageversion</a>
 					</div>
 				</li>
 			</ul>
@@ -35,12 +35,16 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Variable VERSION</h1><p></p>
+			<h1>Function filterAnsiEscapes</h1><p></p>
 			<div class="prototype">
 				<code class="lang-d">
 					<div class="single-prototype">
-			<span class="kwd">const</span><span class="pun">(</span><span class="typ">string</span><span class="pun">)</span> <span class="pln">VERSION</span>
-			 <span class="pun">=</span> <span class="str">"0.0.21"</span><span class="pun">;</span>
+			<span class="typ">string</span> <span class="pln">filterAnsiEscapes</span>(alias predicate)
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">string</span> <span class="pln">s</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
 					</div>
 				</code>
 			</div>
@@ -51,19 +55,25 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Authors</th>
 						<td>
-							
+							<p>Christian Koestlin
+</p>
+
 						</td>
 					</tr>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							
+							<p>Copyright © 2017, Christian Köstlin
+</p>
+
 						</td>
 					</tr>
 					<tr>
 						<th>License</th>
 						<td>
-							
+							<p>MIT
+</p>
+
 						</td>
 					</tr>
 				</table>
