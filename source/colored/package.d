@@ -90,9 +90,15 @@ struct StyledString
 struct RGBString
 {
     string unformatted;
-    ubyte r = 0xff;
-    ubyte g = 0xff;
-    ubyte b = 0xff;
+    struct RGB
+    {
+        ubyte r;
+        ubyte g;
+        ubyte b;
+    }
+
+    RGB* foreground;
+    RGB* background;
     this(string unformatted)
     {
         this.unformatted = unformatted;
@@ -100,16 +106,53 @@ struct RGBString
 
     auto rgb(ubyte r, ubyte g, ubyte b)
     {
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.foreground = new RGB(r, g, b);
+        return this;
+    }
+
+    auto onRgb(ubyte r, ubyte g, ubyte b)
+    {
+        this.background = new RGB(r, g, b);
         return this;
     }
 
     string toString() @safe
     {
-        return "\033[38;2;%s;%s;%sm%s\033[0m".format(r, g, b, unformatted);
+        auto res = "";
+        if (foreground != null)
+        {
+            res = "\033[38;2;%s;%s;%sm".format(foreground.r, foreground.g, foreground.b) ~ res;
+        }
+        if (background != null)
+        {
+            res = "\033[48;2;%s;%s;%sm".format(background.r, background.g, background.b) ~ res;
+        }
+        res ~= unformatted;
+        if (foreground != null || background != null)
+        {
+            res ~= "\033[0m";
+        }
+        return res;
     }
+}
+
+string rgb(string s, ubyte r, ubyte g, ubyte b)
+{
+    return RGBString(s).rgb(r, g, b).toString;
+}
+
+string onRgb(string s, ubyte r, ubyte g, ubyte b)
+{
+    return RGBString(s).onRgb(r, g, b).toString;
+}
+
+@("rgb") unittest
+{
+    import std.stdio;
+
+    writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
+    writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
+    writeln("blue: ", "b".rgb(0, 0, 255).onRgb(255, 0, 0));
 }
 
 @("styledstring") unittest
@@ -222,6 +265,7 @@ ulong unformattedLength(string s)
     return count;
 }
 
+// https://en.wikipedia.org/wiki/ANSI_escape_code
 auto tokenize(Range)(Range parts)
 {
     import std.range;
