@@ -7,6 +7,8 @@
  +/
 module colored;
 
+@safe:
+
 import std.string;
 
 public import colored.packageversion;

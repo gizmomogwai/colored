@@ -15,7 +15,7 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>0.8.0"
+  dependency "unit-threaded" version="~>1.0.0"
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
@@ -24,4 +24,4 @@ preGenerateCommands "packageversion || dub run packageversion"
 sourceFiles "out/generated/packageversion/colored/packageversion.d"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"
-dependency "packageversion" version="~>0.0.18"
+dependency "packageversion" version="~>0.0.19"
