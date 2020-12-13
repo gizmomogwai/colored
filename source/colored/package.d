@@ -155,6 +155,13 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
     writeln("blue: ", "b".rgb(0, 0, 255).onRgb(255, 0, 0));
+
+    for (int r=0; r<=255; r+=10) {
+        for (int g=0; g<=255; g+=3) {
+            write(" ".onRgb(cast(ubyte)r, cast(ubyte)g, cast(ubyte)(255-r)));
+        }
+        writeln;
+    }
 }
 
 @("styledstring") unittest
