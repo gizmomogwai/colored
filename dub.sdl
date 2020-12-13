@@ -16,7 +16,7 @@ configuration "unittest" {
   targetPath "out/test"
 
   dependency "unit-threaded" version="~>1.0.0"
-  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
+  preBuildCommands "packageversion || dub run packageversion && dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
 
