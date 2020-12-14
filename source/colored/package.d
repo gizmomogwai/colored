@@ -148,9 +148,9 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     return RGBString(s).onRgb(r, g, b).toString;
 }
 
-@("rgb") unittest
+@system @("rgb") unittest
 {
-    import std.stdio;
+    import std;
 
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
@@ -162,6 +162,22 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         }
         writeln;
     }
+
+    import core.thread;
+    int delay = std.process.environment.get("DELAY", "0").to!int;
+    for (int j=0; j<255; j+=1) {
+        for (int i=0; i<255; i+=3) {
+            import std.experimental.color;
+            import std.experimental.color.hsx;
+            import std.experimental.color.rgb;
+            auto c = HSV!ubyte(cast(ubyte)(i-j), 0xff, 0xff);
+            auto rgb = convertColor!RGBA8(c).tristimulus;
+            write(" ".onRgb(rgb[0].value, rgb[1].value, rgb[2].value));
+        }
+        Thread.sleep(delay.msecs);
+        write("\r");
+    }
+    writeln;
 }
 
 @("styledstring") unittest
