@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 * Colored
-[[https://github.com/gizmomogwai/colored][https://img.shields.io/github/tag/gizmomogwai/colored.svg?style=flat-square]] [[https://travis-ci.org/gizmomogwai/colored][https://img.shields.io/travis/gizmomogwai/colored/master.svg?style=flat-square]] [[https://codecov.io/gh/gizmomogwai/colored][https://img.shields.io/codecov/c/github/gizmomogwai/colored/master.svg?style=flat-square]] [[https://gizmomogwai.github.io/colored][https://img.shields.io/readthedocs/pip.svg?style=flat-square]]
+[[https://github.com/gizmomogwai/colored][https://img.shields.io/github/tag/gizmomogwai/colored.svg?style=flat-square]] [[https://travis-ci.org/gizmomogwai/colored][https://img.shields.io/travis/gizmomogwai/colored/master.svg?style=flat-square]] [[https://codecov.io/gh/gizmomogwai/colored][https://img.shields.io/codecov/c/github/gizmomogwai/colored/master.svg?style=flat-square]] [[https://gizmomogwai.github.io/colored][https://img.shields.io/readthedocs/pip.svg?style=flat-square]] [[http://code.dlang.org/packages/colored][https://img.shields.io/dub/l/colored.svg?style=flat-square]] [[http://code.dlang.org/packages/colored][https://img.shields.io/dub/v/colored.svg?style=flat-square]] [[http://code.dlang.org/packages/colored][https://img.shields.io/dub/dw/colored.svg?style=flat-square]]
 
 ** Intro
 colored is yet another terminal coloring lib for dlang. compared to
@@ -10,8 +10,8 @@ unit_threaded for testing.
 ** Usage
 #+NAME: example
 #+BEGIN_SRC D
-import colored;
 unittest {
+  import colored;
   import std.stdio;
   "test".green.onRed.writeln;
 }
