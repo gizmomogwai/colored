@@ -7,6 +7,8 @@
  +/
 module colored;
 
+version (unittest) import unit_threaded;
+
 @safe:
 
 import std.string;
@@ -156,21 +158,27 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
     writeln("blue: ", "b".rgb(0, 0, 255).onRgb(255, 0, 0));
 
-    for (int r=0; r<=255; r+=10) {
-        for (int g=0; g<=255; g+=3) {
-            write(" ".onRgb(cast(ubyte)r, cast(ubyte)g, cast(ubyte)(255-r)));
+    for (int r = 0; r <= 255; r += 10)
+    {
+        for (int g = 0; g <= 255; g += 3)
+        {
+            write(" ".onRgb(cast(ubyte) r, cast(ubyte) g, cast(ubyte)(255 - r)));
         }
         writeln;
     }
 
     import core.thread;
+
     int delay = std.process.environment.get("DELAY", "0").to!int;
-    for (int j=0; j<255; j+=1) {
-        for (int i=0; i<255; i+=3) {
+    for (int j = 0; j < 255; j += 1)
+    {
+        for (int i = 0; i < 255; i += 3)
+        {
             import std.experimental.color;
             import std.experimental.color.hsx;
             import std.experimental.color.rgb;
-            auto c = HSV!ubyte(cast(ubyte)(i-j), 0xff, 0xff);
+
+            auto c = HSV!ubyte(cast(ubyte)(i - j), 0xff, 0xff);
             auto rgb = convertColor!RGBA8(c).tristimulus;
             write(" ".onRgb(rgb[0].value, rgb[1].value, rgb[2].value));
         }
@@ -182,7 +190,6 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @("styledstring") unittest
 {
-    import unit_threaded;
     import std.stdio;
     import std.traits;
 
@@ -344,7 +351,8 @@ auto tokenize(Range)(Range parts)
             case 0: .. case 37:
             case 39: .. case 47:
             case 49:
-            case 51: .. case 55:
+            case 51:
+                    .. case 55:
             case 60: .. case 65:
             case 90: .. case 97:
             case 100: .. case 107:
@@ -377,10 +385,9 @@ auto tokenize(Range)(Range parts)
 
 @("ansi tokenizer") unittest
 {
-    import unit_threaded;
-
-    [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.shouldEqual([[38, 5,
-            2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]]);
+    [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
+            [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
+            ]);
 }
 
 string filterAnsiEscapes(alias predicate)(string s)
@@ -394,7 +401,9 @@ string filterAnsiEscapes(alias predicate)(string s)
         import std.conv;
         import std.array;
 
-        auto parts = c[1].split(";").map!(a => a.to!uint).tokenize.filter!(p => predicate(p));
+        auto parts = c[1].split(";").map!(a => a.to!uint)
+            .tokenize
+            .filter!(p => predicate(p));
         if (parts.empty)
         {
             return "";
@@ -436,13 +445,12 @@ bool all(uint[] token)
 
 @("configurable strip") unittest
 {
-    import unit_threaded;
     import std.functional;
 
-    "\033[1;31mtest".filterAnsiEscapes!(foregroundColor).shouldEqual("\033[31mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(not!foregroundColor).shouldEqual("\033[1mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(style).shouldEqual("\033[1mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(none).shouldEqual("test");
+    "\033[1;31mtest".filterAnsiEscapes!(foregroundColor).should == ("\033[31mtest");
+    "\033[1;31mtest".filterAnsiEscapes!(not!foregroundColor).should == ("\033[1mtest");
+    "\033[1;31mtest".filterAnsiEscapes!(style).should == ("\033[1mtest");
+    "\033[1;31mtest".filterAnsiEscapes!(none).should == ("test");
 }
 
 auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
@@ -454,4 +462,20 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
         res ~= fillChar;
     }
     return res;
+}
+
+auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
+{
+    auto res = s;
+    auto currentWidth = s.unformattedLength;
+    for (auto i = currentWidth; i < width; ++i)
+    {
+        res = fillChar ~ res;
+    }
+    return res;
+}
+
+@("rightJustifyFormattedString") unittest
+{
+    "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }

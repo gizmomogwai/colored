@@ -3,6 +3,6 @@
 	"versions": {
 		"color": "0.0.9",
 		"packageversion": "0.0.19",
-		"unit-threaded": "1.0.0"
+		"unit-threaded": "2.0.3"
 	}
 }
