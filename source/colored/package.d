@@ -7,8 +7,6 @@
  +/
 module colored;
 
-version (unittest) import unit_threaded;
-
 @safe:
 
 import std.string;
@@ -89,6 +87,11 @@ struct StyledString
         auto suffix = afters.map!(a => "\033[%dm".format(a)).join("");
         return "%s%s%s".format(prefix, unformatted, suffix);
     }
+
+    string opBinary(string op : "~")(string rhs) @safe
+    {
+        return toString ~ rhs;
+    }
 }
 
 struct RGBString
@@ -152,6 +155,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("rgb") unittest
 {
+    import unit_threaded;
     import std;
 
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
@@ -190,6 +194,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @("styledstring") unittest
 {
+    import unit_threaded;
     import std.stdio;
     import std.traits;
 
@@ -208,6 +213,12 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         auto styleName = "%s".format(style);
         writeln(StyledString(styleName).addStyle(style));
     }
+}
+
+@("styledstring ~") unittest
+{
+    import unit_threaded;
+    ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
 
 auto colorMixin(T)()
@@ -251,6 +262,7 @@ mixin(styleMixin!Style);
 
 @("api") unittest
 {
+    import unit_threaded;
     import std.stdio;
 
     "redOnGreen".red.onGreen.writeln;
@@ -385,6 +397,7 @@ auto tokenize(Range)(Range parts)
 
 @("ansi tokenizer") unittest
 {
+    import unit_threaded;
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
             [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
             ]);
@@ -445,6 +458,7 @@ bool all(uint[] token)
 
 @("configurable strip") unittest
 {
+    import unit_threaded;
     import std.functional;
 
     "\033[1;31mtest".filterAnsiEscapes!(foregroundColor).should == ("\033[31mtest");
@@ -477,5 +491,6 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 
 @("rightJustifyFormattedString") unittest
 {
+    import unit_threaded;
     "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }
