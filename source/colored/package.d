@@ -11,8 +11,6 @@ module colored;
 
 import std.string;
 
-public import colored.packageversion;
-
 /// Available Colors
 enum AnsiColor
 {

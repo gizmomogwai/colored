@@ -15,15 +15,8 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>2.0.3"
+  dependency "unit-threaded" version="~>2.0.4"
   dependency "color" version="~>0.0.9"
 
-  preGenerateCommands "$DUB run --cache=local packageversion && $DUB run --compiler=$$DC unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d -d $DUB"
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
 }
-
-preGenerateCommands "packageversion || dub run --cache=local packageversion"
-sourceFiles "out/generated/packageversion/colored/packageversion.d"
-sourcePaths "source" "out/generated/packageversion"
-importPaths "source" "out/generated/packageversion"
-dependency "packageversion" version="~>0.0.19"
