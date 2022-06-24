@@ -8,6 +8,7 @@ x:ddoxFilterArgs "--min-protection=Public"
 
 configuration "library" {
   targetPath "out/lib"
+  excludedSourceFiles "source/testsuite.d"
 }
 
 configuration "unittest" {
@@ -18,5 +19,5 @@ configuration "unittest" {
   dependency "unit-threaded" version="~>2.0.4"
   dependency "color" version="~>0.0.9"
 
-  mainSourceFile "out/generated/unit-threaded/testsuite.d"
+  mainSourceFile "source/testsuite.d"
 }
