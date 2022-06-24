@@ -151,7 +151,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     return RGBString(s).onRgb(r, g, b).toString;
 }
 
-@system @("rgb") unittest
+@system @("rgb") unittest 
 {
     import unit_threaded;
     import std;
@@ -190,7 +190,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     writeln;
 }
 
-@("styledstring") unittest
+@system @("styledstring") unittest
 {
     import unit_threaded;
     import std.stdio;
@@ -213,7 +213,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     }
 }
 
-@("styledstring ~") unittest
+@system @("styledstring ~") unittest
 {
     import unit_threaded;
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
@@ -258,7 +258,7 @@ auto styleMixin(T)()
 mixin(colorMixin!AnsiColor);
 mixin(styleMixin!Style);
 
-@("api") unittest
+@system @("api") unittest
 {
     import unit_threaded;
     import std.stdio;
@@ -393,7 +393,7 @@ auto tokenize(Range)(Range parts)
     return TokenizeResult!(Range)(parts);
 }
 
-@("ansi tokenizer") unittest
+@system @("ansi tokenizer") unittest
 {
     import unit_threaded;
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
@@ -454,7 +454,7 @@ bool all(uint[] token)
     return true;
 }
 
-@("configurable strip") unittest
+@system @("configurable strip") unittest
 {
     import unit_threaded;
     import std.functional;
@@ -487,7 +487,7 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
     return res;
 }
 
-@("rightJustifyFormattedString") unittest
+@system @("rightJustifyFormattedString") unittest
 {
     import unit_threaded;
     "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
