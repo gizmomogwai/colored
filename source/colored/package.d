@@ -1,7 +1,7 @@
 /++
  + Simple coloring module for strings
  +
- + Copyright: Copyright © 2017, Christian Köstlin
+ + Copyright: Copyright (C) 2017, Christian Koestlin
  + Authors: Christian Koestlin
  + License: MIT
  +/
@@ -47,9 +47,10 @@ enum Style
 /// Internal structure to style a string
 struct StyledString
 {
-    public string unformatted;
+    private string unformatted;
     private int[] befores;
     private int[] afters;
+    /// Create a styled string
     public this(string unformatted)
     {
         this.unformatted = unformatted;
@@ -72,12 +73,13 @@ struct StyledString
         return addPair(color + 10, 0);
     }
 
+    /// Add styling to a string
     StyledString addStyle(int style)
     {
         return addPair(style, 0);
     }
 
-    string toString() @safe
+    string toString() const @safe
     {
         import std.algorithm;
 
@@ -86,35 +88,44 @@ struct StyledString
         return "%s%s%s".format(prefix, unformatted, suffix);
     }
 
+    /// Concatenate with another string
     string opBinary(string op : "~")(string rhs) @safe
     {
         return toString ~ rhs;
     }
 }
 
+/// Truecolor string
 struct RGBString
 {
-    string unformatted;
+    private string unformatted;
+    /// Colorinformation
     struct RGB
     {
+        /// Red component 0..256
         ubyte r;
+        /// Green component 0..256
         ubyte g;
+        /// Blue component 0..256
         ubyte b;
     }
 
-    RGB* foreground;
-    RGB* background;
+    private RGB* foreground;
+    private RGB* background;
+    /// Create RGB String
     this(string unformatted)
     {
         this.unformatted = unformatted;
     }
 
+    /// Set color
     auto rgb(ubyte r, ubyte g, ubyte b)
     {
         this.foreground = new RGB(r, g, b);
         return this;
     }
 
+    /// Set background color
     auto onRgb(ubyte r, ubyte g, ubyte b)
     {
         this.background = new RGB(r, g, b);
@@ -141,11 +152,13 @@ struct RGBString
     }
 }
 
+/// Convinient helper function
 string rgb(string s, ubyte r, ubyte g, ubyte b)
 {
     return RGBString(s).rgb(r, g, b).toString;
 }
 
+/// Convinient helper function
 string onRgb(string s, ubyte r, ubyte g, ubyte b)
 {
     return RGBString(s).onRgb(r, g, b).toString;
@@ -219,6 +232,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
 
+/// Create `color` and `onColor` functions for all enum members. e.g. "abc".green.onRed
 auto colorMixin(T)()
 {
     import std.traits;
@@ -240,6 +254,7 @@ auto colorMixin(T)()
     return res;
 }
 
+/// Create `style` functions for all enum mebers, e.g. "abc".bold
 auto styleMixin(T)()
 {
     import std.traits;
@@ -307,7 +322,9 @@ ulong unformattedLength(string s)
     return count;
 }
 
-// https://en.wikipedia.org/wiki/ANSI_escape_code
+/++ Range to work with ansi escaped strings.
+ + See https://en.wikipedia.org/wiki/ANSI_escape_code
+ +/
 auto tokenize(Range)(Range parts)
 {
     import std.range;
@@ -401,6 +418,8 @@ auto tokenize(Range)(Range parts)
             ]);
 }
 
+/++ Remove classes of ansi escapes from a styled string.
+ +/
 string filterAnsiEscapes(alias predicate)(string s)
 {
     import std.regex;
@@ -429,27 +448,32 @@ string filterAnsiEscapes(alias predicate)(string s)
     return s.replaceAll!(withFilters)(r);
 }
 
+/// Predicate to select foreground color ansi escapes
 bool foregroundColor(uint[] token)
 {
     return token[0] >= 30 && token[0] <= 38;
 }
 
+/// Predicate to select background color ansi escapes
 bool backgroundColor(uint[] token)
 {
     return token[0] >= 40 && token[0] <= 48;
 }
 
+/// Predicate to select style ansi escapes
 bool style(uint[] token)
 {
     return token[0] >= 1 && token[0] <= 29;
 }
 
-bool none(uint[] token)
+/// Predicate select nothing
+bool none(uint[])
 {
     return false;
 }
 
-bool all(uint[] token)
+/// Predicate to select all
+bool all(uint[])
 {
     return true;
 }
@@ -465,10 +489,11 @@ bool all(uint[] token)
     "\033[1;31mtest".filterAnsiEscapes!(none).should == ("test");
 }
 
+/// Add fillChar to the right of the string until width is reached
 auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 {
     auto res = s;
-    auto currentWidth = s.unformattedLength;
+    const currentWidth = s.unformattedLength;
     for (auto i = currentWidth; i < width; ++i)
     {
         res ~= fillChar;
@@ -476,10 +501,11 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
     return res;
 }
 
+/// Add fillChar to the left of the string until width is reached
 auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 {
     auto res = s;
-    auto currentWidth = s.unformattedLength;
+    const currentWidth = s.unformattedLength;
     for (auto i = currentWidth; i < width; ++i)
     {
         res = fillChar ~ res;
