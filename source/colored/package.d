@@ -494,7 +494,7 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 {
     auto res = s;
     const currentWidth = s.unformattedLength;
-    for (auto i = currentWidth; i < width; ++i)
+    for (long i = currentWidth; i < width; ++i)
     {
         res ~= fillChar;
     }
@@ -506,7 +506,7 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 {
     auto res = s;
     const currentWidth = s.unformattedLength;
-    for (auto i = currentWidth; i < width; ++i)
+    for (long i = currentWidth; i < width; ++i)
     {
         res = fillChar ~ res;
     }
