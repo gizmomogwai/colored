@@ -49,7 +49,8 @@ unit-test:
     - source ~/dlang/dmd-*/activate
     - dub test --coverage
   artifacts:
-    paths: *.lst
+    paths:
+      - "*.lst"        
 
 lint:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
