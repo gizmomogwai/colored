@@ -483,10 +483,12 @@ bool all(uint[])
     import unit_threaded;
     import std.functional : not;
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(foregroundColor).should == "\033[31mtest";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor).should == "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor).should ==
+        "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(style).should == "\033[1mtest";
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(none).should == "test";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all).should == "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all).should ==
+        "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
 }
 
 /// Add fillChar to the right of the string until width is reached
