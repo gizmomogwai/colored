@@ -489,6 +489,8 @@ bool all(uint[])
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(none).should == "test";
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(all).should ==
         "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(backgroundColor).should ==
+        "\033[42mtest";
 }
 
 /// Add fillChar to the right of the string until width is reached
