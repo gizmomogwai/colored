@@ -481,12 +481,12 @@ bool all(uint[])
 @system @("configurable strip") unittest
 {
     import unit_threaded;
-    import std.functional;
-
-    "\033[1;31mtest".filterAnsiEscapes!(foregroundColor).should == ("\033[31mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(not!foregroundColor).should == ("\033[1mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(style).should == ("\033[1mtest");
-    "\033[1;31mtest".filterAnsiEscapes!(none).should == ("test");
+    import std.functional : not;
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(foregroundColor).should == "\033[31mtest";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor).should == "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(style).should == "\033[1mtest";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(none).should == "test";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all).should == "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
 }
 
 /// Add fillChar to the right of the string until width is reached
@@ -499,6 +499,12 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
         res ~= fillChar;
     }
     return res;
+}
+
+@system @("leftJustifyFormattedString") unittest
+{
+    import unit_threaded;
+    "test".red.toString.leftJustifyFormattedString(10).should == "\033[31mtest\033[0m      ";
 }
 
 /// Add fillChar to the left of the string until width is reached
