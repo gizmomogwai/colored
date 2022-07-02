@@ -58,6 +58,15 @@ lint:   # This job also runs in the test stage.
     - source ~/dlang/dmd-*/activate
     - dub run dscanner -- --styleCheck source
 
+pages:
+  stage: deploy
+  script:
+    - dub build --build=ddox
+    - mv docs public
+  artifacts:
+    paths: 
+      - public
+
 #codecov:
 #  stage: deploy
 #  script:
