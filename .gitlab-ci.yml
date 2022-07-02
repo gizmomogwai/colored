@@ -61,6 +61,7 @@ lint:   # This job also runs in the test stage.
 pages:
   stage: deploy
   script:
+    - source ~/dlang/dmd-*/activate
     - dub build --build=ddox
     - mv docs public
   artifacts:
