@@ -6,6 +6,8 @@ license "MIT"
 
 x:ddoxFilterArgs "--min-protection=Public"
 
+preGenerateCommands "$DC --version"
+
 configuration "library" {
   targetPath "out/lib"
   excludedSourceFiles "source/testsuite.d"
