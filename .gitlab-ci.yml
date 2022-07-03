@@ -46,7 +46,7 @@ build:
     - dub build
   parallel:
     matrix:
-      - DLANG_COMPILER: ["dmd", "ldc", "gdc"]
+      - DLANG_COMPILER: ["dmd", "ldc"]
     
 
 unit-test:
