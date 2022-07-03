@@ -59,7 +59,7 @@ lint:   # This job also runs in the test stage.
     - dub run dscanner -- --styleCheck source
 
 pages:
-  stage: build
+  stage: deploy
   script:
     - source ~/dlang/dmd-*/activate
     - dub build --build=ddox
