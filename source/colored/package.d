@@ -322,7 +322,8 @@ ulong unformattedLength(string s)
     return count;
 }
 
-/++ Range to work with ansi escaped strings.
+/++ Range to work with ansi escapes. The ESC[ parts and m must be
+ + already removed and the numbers need to be converted to uints.
  + See https://en.wikipedia.org/wiki/ANSI_escape_code
  +/
 auto tokenize(Range)(Range parts)
