@@ -40,11 +40,14 @@ default:
 build:
   stage: build
   script:
-    - source ~/dlang/$DC-*/activate
+    - echo $DLANG_COMPILER
+    - source ~/dlang/$DLANG_COMPILER-*/activate
+    - dmd --version
+    - dub --version
     - dub build
   parallel:
     matrix:
-      - DC: ["dmd", "ldc", "gdc"]
+      - DLANG_COMPILER: ["dmd", "ldc", "gdc"]
     
 
 unit-test:
@@ -60,6 +63,7 @@ lint:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   script:
     - source ~/dlang/dmd-*/activate
+    - dub run dscanner -- --version
     - dub run dscanner -- --styleCheck source
 
 pages:
