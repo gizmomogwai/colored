@@ -42,7 +42,6 @@ build:
   script:
     - echo $DLANG_COMPILER
     - source ~/dlang/$DLANG_COMPILER-*/activate
-    - dmd --version
     - dub --version
     - dub build
   parallel:
