@@ -40,8 +40,12 @@ default:
 build:
   stage: build
   script:
-    - source ~/dlang/dmd-*/activate
+    - source ~/dlang/$DC-*/activate
     - dub build
+  parallel:
+    matrix:
+      - DC: ["dmd", "ldc", "gdc"]
+    
 
 unit-test:
   stage: test
