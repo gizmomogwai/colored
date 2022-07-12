@@ -1,0 +1,53 @@
+variables:
+    CONFIG: library
+
+prepare-docker-image:
+  stage: .pre
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd .gitlab
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH/buildimage:latest .
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH/buildimage:latest
+#  only:
+#    changes:
+#      - Dockerfile
+
+default:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/buildimage:latest
+
+build:
+  stage: build
+  script:
+    - echo $DLANG_COMPILER
+    - source ~/dlang/$DLANG_COMPILER-*/activate
+    - dub --version
+    - dub build --config=$CONFIG
+  parallel:
+    matrix:
+      - DLANG_COMPILER: ["dmd", "ldc"]
+
+unit-test:
+  stage: test
+  script:
+    - source ~/dlang/dmd-*/activate
+    - dub test --coverage && codecov
+
+lint:   # This job also runs in the test stage.
+  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  script:
+    - source ~/dlang/dmd-*/activate
+    - dub lint -- --version
+    - dub lint --report
+
+pages:
+  stage: deploy
+  script:
+    - source ~/dlang/dmd-*/activate
+    - dub build --build=ddox
+    - mv docs public
+  artifacts:
+    paths:
+      - public
