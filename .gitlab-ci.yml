@@ -1,1 +1,8 @@
-include: ".gitlab/dlang-build.yml"
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+include: 
+  - project: "gizmomogwai/dlang-build"
+    file: "dlang-build.yml"
+    ref: "main"
+
+    
