@@ -3,4 +3,4 @@ variables:
 include:
   - project: "gizmomogwai/dlang-build"
     file: "dlang-build.yml"
-    ref: "main"
+    ref: "v1.0.0"
