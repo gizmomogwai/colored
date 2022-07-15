@@ -164,7 +164,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
     return RGBString(s).onRgb(r, g, b).toString;
 }
 
-@system @("rgb") unittest 
+@system @("rgb") unittest
 {
     import unit_threaded;
     import std;
@@ -229,6 +229,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 @system @("styledstring ~") unittest
 {
     import unit_threaded;
+
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
 
@@ -414,9 +415,10 @@ auto tokenize(Range)(Range parts)
 @system @("ansi tokenizer") unittest
 {
     import unit_threaded;
+
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
-            [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
-            ]);
+        [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
+    ]);
 }
 
 /++ Remove classes of ansi escapes from a styled string.
@@ -483,15 +485,15 @@ bool all(uint[])
 {
     import unit_threaded;
     import std.functional : not;
+
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(foregroundColor).should == "\033[31mtest";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor).should ==
-        "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor)
+        .should == "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(style).should == "\033[1mtest";
     "test".red.onGreen.bold.toString.filterAnsiEscapes!(none).should == "test";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all).should ==
-        "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(backgroundColor).should ==
-        "\033[42mtest";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all)
+        .should == "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
+    "test".red.onGreen.bold.toString.filterAnsiEscapes!(backgroundColor).should == "\033[42mtest";
 }
 
 /// Add fillChar to the right of the string until width is reached
@@ -509,6 +511,7 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 @system @("leftJustifyFormattedString") unittest
 {
     import unit_threaded;
+
     "test".red.toString.leftJustifyFormattedString(10).should == "\033[31mtest\033[0m      ";
 }
 
@@ -527,5 +530,6 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 @system @("rightJustifyFormattedString") unittest
 {
     import unit_threaded;
+
     "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }
