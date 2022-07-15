@@ -24,3 +24,4 @@ configuration "unittest" {
 
   mainSourceFile "source/testsuite.d"
 }
+PRE_GENERATE_COMMANDS "$DC --version"
