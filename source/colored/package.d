@@ -1,7 +1,7 @@
 /++
  + Simple coloring module for strings
  +
- + Copyright: Copyright (C) 2017, Christian Koestlin
+ + Copyright: Copyright (c) 2017, Christian Koestlin
  + Authors: Christian Koestlin, Christian Köstlin
  + License: MIT
  +/
