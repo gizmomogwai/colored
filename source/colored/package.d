@@ -224,6 +224,9 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         auto styleName = "%s".format(style);
         writeln(StyledString(styleName).addStyle(style));
     }
+
+    writeln("boldUnderlined".bold.underlined);
+    writeln("redOnGreenReverse".red.onGreen.reverse);
 }
 
 @system @("styledstring ~") unittest
