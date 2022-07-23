@@ -1,4 +1,4 @@
 include:
   - project: "gizmomogwai/dlang-build"
     file: "dlang-build.yml"
-    ref: "v1.0.1"
+    ref: "v1.0.2"
