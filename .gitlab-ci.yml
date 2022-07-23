@@ -1,6 +1,4 @@
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
 include:
   - project: "gizmomogwai/dlang-build"
     file: "dlang-build.yml"
-    ref: "v1.0.0"
+    ref: "v1.0.1"
