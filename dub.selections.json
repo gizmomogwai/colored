@@ -2,8 +2,6 @@
 	"fileVersion": 1,
 	"versions": {
 		"color": "0.0.9",
-		"packageversion": "0.0.19",
-		"profiled": "~master",
-		"unit-threaded": "2.0.4"
+		"unit-threaded": "2.1.0"
 	}
 }

@@ -19,9 +19,9 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>2.0.4"
+  dependency "unit-threaded" version="~>2.1.0"
   dependency "color" version="~>0.0.9"
 
   mainSourceFile "source/testsuite.d"
+  postRunCommands "$DUB run lst2errormessages"
 }
-PRE_GENERATE_COMMANDS "$DC --version"
