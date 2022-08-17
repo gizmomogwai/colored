@@ -9,8 +9,25 @@ module colored;
 
 @safe:
 
-import std.string;
+import std.algorithm : map, filter, joiner;
+import std.array : join, split;
+import std.conv : to;
+import std.format : format;
+import std.functional : not;
+import std.range : ElementType, empty, front, popFront;
+import std.regex : ctRegex, Captures, replaceAll;
+import std.string : toUpper;
+import std.traits : EnumMembers;
 
+version (unittest)
+{
+    import core.thread : Thread;
+    import core.time : msecs;
+    import std.conv : to;
+    import std.process : environment;
+    import std.stdio : writeln, write;
+    import unit_threaded;
+}
 /// Available Colors
 enum AnsiColor
 {
@@ -81,8 +98,6 @@ struct StyledString
 
     string toString() const @safe
     {
-        import std.algorithm;
-
         auto prefix = befores.map!(a => "\033[%dm".format(a)).join("");
         auto suffix = afters.map!(a => "\033[%dm".format(a)).join("");
         return "%s%s%s".format(prefix, unformatted, suffix);
@@ -166,13 +181,13 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("rgb") unittest
 {
-    import unit_threaded;
-    import std;
+    import std.experimental.color : RGBA8, convertColor;
+    import std.experimental.color.hsx : HSV;
 
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
     writeln("blue: ", "b".rgb(0, 0, 255).onRgb(255, 0, 0));
-
+    writeln("mixed: ", ("withoutColor" ~ "red".red.to!string ~ "withoutColor").bold);
     for (int r = 0; r <= 255; r += 10)
     {
         for (int g = 0; g <= 255; g += 3)
@@ -182,17 +197,11 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         writeln;
     }
 
-    import core.thread;
-
-    int delay = std.process.environment.get("DELAY", "0").to!int;
+    int delay = environment.get("DELAY", "0").to!int;
     for (int j = 0; j < 255; j += 1)
     {
         for (int i = 0; i < 255; i += 3)
         {
-            import std.experimental.color;
-            import std.experimental.color.hsx;
-            import std.experimental.color.rgb;
-
             auto c = HSV!ubyte(cast(ubyte)(i - j), 0xff, 0xff);
             auto rgb = convertColor!RGBA8(c).tristimulus;
             write(" ".onRgb(rgb[0].value, rgb[1].value, rgb[2].value));
@@ -205,10 +214,6 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("styledstring") unittest
 {
-    import unit_threaded;
-    import std.stdio;
-    import std.traits;
-
     foreach (immutable color; [EnumMembers!AnsiColor])
     {
         auto colorName = "%s".format(color);
@@ -231,16 +236,12 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("styledstring ~") unittest
 {
-    import unit_threaded;
-
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
 
 /// Create `color` and `onColor` functions for all enum members. e.g. "abc".green.onRed
 auto colorMixin(T)()
 {
-    import std.traits;
-
     string res = "";
     foreach (immutable color; [EnumMembers!T])
     {
@@ -261,8 +262,6 @@ auto colorMixin(T)()
 /// Create `style` functions for all enum mebers, e.g. "abc".bold
 auto styleMixin(T)()
 {
-    import std.traits;
-
     string res = "";
     foreach (immutable style; [EnumMembers!T])
     {
@@ -279,9 +278,6 @@ mixin(styleMixin!Style);
 
 @system @("api") unittest
 {
-    import unit_threaded;
-    import std.stdio;
-
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
     "bold".bold.writeln;
@@ -332,8 +328,6 @@ ulong unformattedLength(string s)
  +/
 auto tokenize(Range)(Range parts)
 {
-    import std.range;
-
     struct TokenizeResult(Range)
     {
         Range parts;
@@ -417,8 +411,6 @@ auto tokenize(Range)(Range parts)
 
 @system @("ansi tokenizer") unittest
 {
-    import unit_threaded;
-
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
         [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
     ]);
@@ -428,15 +420,8 @@ auto tokenize(Range)(Range parts)
  +/
 string filterAnsiEscapes(alias predicate)(string s)
 {
-    import std.regex;
-
     string withFilters(Captures!string c)
     {
-        import std.string;
-        import std.algorithm;
-        import std.conv;
-        import std.array;
-
         auto parts = c[1].split(";").map!(a => a.to!uint)
             .tokenize
             .filter!(p => predicate(p));
@@ -532,7 +517,19 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 
 @system @("rightJustifyFormattedString") unittest
 {
-    import unit_threaded;
-
     "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
+}
+
+/// Force a style on possible preformatted text
+auto forceStyle(string text, Style style) {
+    return "\033[%d".format(style.to!int) ~ "m" ~ text.split("\033[0m").join("\033[0;%d".format(style.to!int) ~"m") ~ "\033[0m";
+}
+
+@("forceStyle") unittest
+{
+    auto splitt = "1es2eses3".split("es").filter!(not!(empty));
+    splitt.should == ["1", "2", "3"];
+    string s = "noformatting%snoformatting".format("red".red).forceStyle(Style.reverse);
+    writeln(s);
+    s.should == "\033[7mnoformatting\033[31mred\033[0;7mnoformatting\033[0m";
 }
