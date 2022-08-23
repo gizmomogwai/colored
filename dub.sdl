@@ -23,5 +23,5 @@ configuration "unittest" {
   dependency "color" version="~>0.0.9"
 
   mainSourceFile "source/testsuite.d"
-  postRunCommands "$DUB run lst2errormessages"
+  postRunCommands "$DUB run lst2errormessages || true"
 }
