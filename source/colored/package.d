@@ -96,17 +96,18 @@ struct StyledString
         return addPair(style, 0);
     }
 
-    string toString() const @safe
+
+    void toString(Sink, Format)(Sink sink, Format format) const
     {
-        auto prefix = befores.map!(a => "\033[%dm".format(a)).join("");
-        auto suffix = afters.map!(a => "\033[%dm".format(a)).join("");
-        return "%s%s%s".format(prefix, unformatted, suffix);
+        sink(befores.map!(a => "\033[%dm".format(a)).join(""));
+        sink(unformatted);
+        sink(afters.map!(a => "\033[%dm".format(a)).join(""));
     }
 
     /// Concatenate with another string
     string opBinary(string op : "~")(string rhs) @safe
     {
-        return toString ~ rhs;
+        return this.to!string ~ rhs;
     }
 }
 
@@ -147,43 +148,43 @@ struct RGBString
         return this;
     }
 
-    string toString() @safe
+    void toString(Sink, Format)(Sink sink, Format format) const
     {
-        auto res = "";
         if (foreground != null)
         {
-            res = "\033[38;2;%s;%s;%sm".format(foreground.r, foreground.g, foreground.b) ~ res;
+            sink("\033[38;2;%s;%s;%sm".format(foreground.r, foreground.g, foreground.b));
+            sink(res);
         }
         if (background != null)
         {
-            res = "\033[48;2;%s;%s;%sm".format(background.r, background.g, background.b) ~ res;
+            sink("\033[48;2;%s;%s;%sm".format(background.r, background.g, background.b));
+            sink(res);
         }
-        res ~= unformatted;
+        sink(unformatted);
         if (foreground != null || background != null)
         {
-            res ~= "\033[0m";
+            sink("\033[0m");
         }
-        return res;
     }
 }
 
 /// Convinient helper function
 string rgb(string s, ubyte r, ubyte g, ubyte b)
 {
-    return RGBString(s).rgb(r, g, b).toString;
+    return RGBString(s).rgb(r, g, b).to!string;
 }
 
 /// Convinient helper function
 string onRgb(string s, ubyte r, ubyte g, ubyte b)
 {
-    return RGBString(s).onRgb(r, g, b).toString;
+    return RGBString(s).onRgb(r, g, b).to!string;
 }
 
 @system @("rgb") unittest
 {
-    import std.experimental.color : RGBA8, convertColor;
-    import std.experimental.color.hsx : HSV;
-
+    // import std.experimental.color : RGBA8, convertColor;
+    //   import std.experimental.color.hsx : HSV;
+/*
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
     writeln("blue: ", "b".rgb(0, 0, 255).onRgb(255, 0, 0));
@@ -196,7 +197,8 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         }
         writeln;
     }
-
+*/
+/*
     int delay = environment.get("DELAY", "0").to!int;
     for (int j = 0; j < 255; j += 1)
     {
@@ -209,6 +211,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
         Thread.sleep(delay.msecs);
         write("\r");
     }
+*/
     writeln;
 }
 
@@ -474,14 +477,14 @@ bool all(uint[])
     import unit_threaded;
     import std.functional : not;
 
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(foregroundColor).should == "\033[31mtest";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(not!foregroundColor)
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(foregroundColor).to!string.should == "\033[31mtest";
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(not!foregroundColor)
         .should == "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(style).should == "\033[1mtest";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(none).should == "test";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(all)
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(style).should == "\033[1mtest";
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(none).should == "test";
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(all)
         .should == "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
-    "test".red.onGreen.bold.toString.filterAnsiEscapes!(backgroundColor).should == "\033[42mtest";
+    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(backgroundColor).should == "\033[42mtest";
 }
 
 /// Add fillChar to the right of the string until width is reached
@@ -500,7 +503,7 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 {
     import unit_threaded;
 
-    "test".red.toString.leftJustifyFormattedString(10).should == "\033[31mtest\033[0m      ";
+    "test".red.to!string.leftJustifyFormattedString(10).to!string.should == "\033[31mtest\033[0m      ";
 }
 
 /// Add fillChar to the left of the string until width is reached
@@ -517,7 +520,7 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 
 @system @("rightJustifyFormattedString") unittest
 {
-    "test".red.toString.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
+    "test".red.to!string.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }
 
 /// Force a style on possible preformatted text
