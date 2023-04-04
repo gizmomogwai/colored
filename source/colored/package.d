@@ -95,7 +95,6 @@ struct StyledString
         return addPair(style, 0);
     }
 
-
     void toString(Sink, Format)(Sink sink, Format format) const
     {
         sink(befores.map!(a => "\033[%dm".format(a)).join(""));
@@ -220,6 +219,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 @system @("styledstring") unittest
 {
     import unit_threaded;
+
     foreach (immutable color; [EnumMembers!AnsiColor])
     {
         auto colorName = "%s".format(color);
@@ -243,6 +243,7 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 @system @("styledstring ~") unittest
 {
     import unit_threaded;
+
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
 
@@ -286,6 +287,7 @@ mixin(styleMixin!Style);
 @system @("api") unittest
 {
     import unit_threaded;
+
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
     "bold".bold.writeln;
@@ -420,6 +422,7 @@ auto tokenize(Range)(Range parts)
 @system @("ansi tokenizer") unittest
 {
     import unit_threaded;
+
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
         [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
     ]);
@@ -483,14 +486,43 @@ bool all(uint[])
     import unit_threaded;
     import std.functional : not;
 
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(foregroundColor).to!string.should == "\033[31mtest";
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(not!foregroundColor)
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(foregroundColor)
+        .to!string
+        .should == "\033[31mtest";
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(not!foregroundColor)
         .should == "\033[42m\033[1mtest\033[0m\033[0m\033[0m";
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(style).should == "\033[1mtest";
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(none).should == "test";
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(all)
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(style)
+        .should == "\033[1mtest";
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(none)
+        .should == "test";
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(all)
         .should == "\033[31m\033[42m\033[1mtest\033[0m\033[0m\033[0m";
-    "test".red.onGreen.bold.to!string.filterAnsiEscapes!(backgroundColor).should == "\033[42mtest";
+    "test".red
+        .onGreen
+        .bold
+        .to!string
+        .filterAnsiEscapes!(backgroundColor)
+        .should == "\033[42mtest";
 }
 
 /// Add fillChar to the right of the string until width is reached
@@ -509,7 +541,8 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 {
     import unit_threaded;
 
-    "test".red.to!string.leftJustifyFormattedString(10).to!string.should == "\033[31mtest\033[0m      ";
+    "test".red.to!string.leftJustifyFormattedString(10)
+        .to!string.should == "\033[31mtest\033[0m      ";
 }
 
 /// Add fillChar to the left of the string until width is reached
@@ -527,17 +560,21 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 @system @("rightJustifyFormattedString") unittest
 {
     import unit_threaded;
+
     "test".red.to!string.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }
 
 /// Force a style on possible preformatted text
-auto forceStyle(string text, Style style) {
-    return "\033[%d".format(style.to!int) ~ "m" ~ text.split("\033[0m").join("\033[0;%d".format(style.to!int) ~"m") ~ "\033[0m";
+auto forceStyle(string text, Style style)
+{
+    return "\033[%d".format(style.to!int) ~ "m" ~ text.split("\033[0m")
+        .join("\033[0;%d".format(style.to!int) ~ "m") ~ "\033[0m";
 }
 
 @("forceStyle") unittest
 {
     import unit_threaded;
+
     auto splitt = "1es2eses3".split("es").filter!(not!(empty));
     splitt.should == ["1", "2", "3"];
     string s = "noformatting%snoformatting".format("red".red).forceStyle(Style.reverse);
