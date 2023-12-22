@@ -9,13 +9,13 @@ module colored;
 
 @safe:
 
-import std.algorithm : map, filter, joiner;
+import std.algorithm : filter, joiner, map;
 import std.array : join, split;
 import std.conv : to;
 import std.format : format;
 import std.functional : not;
 import std.range : ElementType, empty, front, popFront;
-import std.regex : ctRegex, Captures, replaceAll;
+import std.regex : Captures, ctRegex, replaceAll;
 import std.string : toUpper;
 import std.traits : EnumMembers;
 
@@ -25,7 +25,8 @@ version (unittest)
     import core.time : msecs;
     import std.conv : to;
     import std.process : environment;
-    import std.stdio : writeln, write;
+    import std.stdio : write, writeln;
+    import unit_threaded : should;
 }
 /// Available Colors
 enum AnsiColor
@@ -181,9 +182,9 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 /+
 @system @("rgb") unittest
 {
-    import unit_threaded;
-    import std.experimental.color : RGBA8, convertColor;
+    import std.experimental.color : convertColor, RGBA8;
     import std.experimental.color.hsx : HSV;
+    import unit_threaded;
 
     writeln("red: ", "r".rgb(255, 0, 0).onRgb(0, 255, 0));
     writeln("green: ", "g".rgb(0, 255, 0).onRgb(0, 0, 255));
@@ -218,7 +219,6 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("styledstring") unittest
 {
-    import unit_threaded;
 
     foreach (immutable color; [EnumMembers!AnsiColor])
     {
@@ -242,7 +242,6 @@ string onRgb(string s, ubyte r, ubyte g, ubyte b)
 
 @system @("styledstring ~") unittest
 {
-    import unit_threaded;
 
     ("test".red ~ "blub").should == "\033[31mtest\033[0mblub";
 }
@@ -286,8 +285,6 @@ mixin(styleMixin!Style);
 
 @system @("api") unittest
 {
-    import unit_threaded;
-
     "redOnGreen".red.onGreen.writeln;
     "redOnYellowBoldUnderlined".red.onYellow.bold.underlined.writeln;
     "bold".bold.writeln;
@@ -421,8 +418,6 @@ auto tokenize(Range)(Range parts)
 
 @system @("ansi tokenizer") unittest
 {
-    import unit_threaded;
-
     [38, 5, 2, 38, 2, 1, 2, 3, 36, 1, 2, 3, 4].tokenize.should == ([
         [38, 5, 2], [38, 2, 1, 2, 3], [36], [1], [2], [3], [4]
     ]);
@@ -483,9 +478,6 @@ bool all(uint[])
 
 @system @("configurable strip") unittest
 {
-    import unit_threaded;
-    import std.functional : not;
-
     "test".red
         .onGreen
         .bold
@@ -539,8 +531,6 @@ auto leftJustifyFormattedString(string s, ulong width, dchar fillChar = ' ')
 
 @system @("leftJustifyFormattedString") unittest
 {
-    import unit_threaded;
-
     "test".red.to!string.leftJustifyFormattedString(10)
         .to!string.should == "\033[31mtest\033[0m      ";
 }
@@ -559,8 +549,6 @@ auto rightJustifyFormattedString(string s, ulong width, char fillChar = ' ')
 
 @system @("rightJustifyFormattedString") unittest
 {
-    import unit_threaded;
-
     "test".red.to!string.rightJustifyFormattedString(10).should == ("      \033[31mtest\033[0m");
 }
 
@@ -573,8 +561,6 @@ auto forceStyle(string text, Style style)
 
 @("forceStyle") unittest
 {
-    import unit_threaded;
-
     auto splitt = "1es2eses3".split("es").filter!(not!(empty));
     splitt.should == ["1", "2", "3"];
     string s = "noformatting%snoformatting".format("red".red).forceStyle(Style.reverse);

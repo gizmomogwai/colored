@@ -7,8 +7,6 @@ license "MIT"
 x:ddoxFilterArgs "--min-protection=Public"
 x:ddoxTool "scod"
 
-preGenerateCommands "$DC --version"
-
 configuration "library" {
   targetPath "out/lib"
   excludedSourceFiles "source/testsuite.d"
@@ -19,8 +17,7 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>2.1.2"
-//  dependency "color" version="~>0.0.9"
+  dependency "unit-threaded" version="~>2.1.7"
 
   mainSourceFile "source/testsuite.d"
   postRunCommands "$DUB run lst2errormessages || true"
