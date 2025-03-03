@@ -3,7 +3,9 @@
  + Copyright: Copyright (c) 2017, Christian Koestlin
  + Authors: Christian Köstlin
  +/
+version (unittest)
+{
+    import unit_threaded;
 
-import unit_threaded;
-
-mixin runTestsMain!("colored",);
+    mixin runTestsMain!("colored",);
+}
