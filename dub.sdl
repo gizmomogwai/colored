@@ -17,7 +17,7 @@ configuration "unittest" {
   targetName "unittest"
   targetPath "out/test"
 
-  dependency "unit-threaded" version="~>2.2.0"
+  dependency "unit-threaded" version="~>2.2.3"
 
   mainSourceFile "source/testsuite.d"
   postRunCommands "$DUB run lst2errormessages || true"
